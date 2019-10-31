@@ -1,0 +1,1 @@
+include ':app', ':bintray-core', ':bintary-tool'

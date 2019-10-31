@@ -1,0 +1,19 @@
+apply plugin: 'java-library'
+
+ext {
+    bintrayName = 'bintary-tool'
+    artifact = bintrayName
+    libraryName = 'Bintray Tool'
+    libraryDescription = 'The tool used in Bintray'
+    libraryVersion = bintray_tool_version
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'
