@@ -161,6 +161,7 @@ apply from: '../install.gradle'
 apply from: '../bintray.gradle'
 
 ext {
+    //bintrayName尽量和module名称保持一致
     bintrayName = 'bintray-core'
     artifact = bintrayName
     libraryName = 'Bintray library'
