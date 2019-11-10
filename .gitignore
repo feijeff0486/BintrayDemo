@@ -62,9 +62,6 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-app/src/main/res/values/config.xml
-app/src/main/res/drawable/yw_1222.jpg
-
 # OS X Files
 .DS_Store
 
