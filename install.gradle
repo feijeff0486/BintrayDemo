@@ -34,7 +34,7 @@ install {
                 scm {
                     connection gitUrl
                     developerConnection gitUrl
-                    url siteUrl
+                    url siteUrl // 项目主页
                 }
             }
         }

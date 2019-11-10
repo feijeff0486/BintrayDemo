@@ -2,32 +2,40 @@ apply plugin: 'com.jfrog.bintray'
 
 version = libraryVersion
 
-//if (project.hasProperty("android")) { // Android libraries
-//    task sourcesJar(type: Jar) {
-//        classifier = 'sources'
-//        from android.sourceSets.main.java.srcDirs
-//    }
-//
-//    task javadoc(type: Javadoc) {
-//        source = android.sourceSets.main.java.srcDirs
-//        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//    }
-//} else { // Java libraries
-//    task sourcesJar(type: Jar, dependsOn: classes) {
-//        classifier = 'sources'
-//        from sourceSets.main.allSource
-//    }
-//}
+boolean isAndroidModule = project.pluginManager.hasPlugin("com.android.library")
+println(project.name+" is android module : "+isAndroidModule)
+if (isAndroidModule) { // Android libraries
+    //生成jar包的task
+    task sourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        classifier = 'sources'
+    }
 
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
+    //生成jarDoc的task
+    task javadoc(type: Javadoc) {
+        options.encoding "UTF-8"
+        options.charSet 'UTF-8'
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        failOnError false // 忽略注释语法错误，如果用jdk1.8你的注释写的不规范就编译不过
+    }
+} else { // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
 
-//artifacts {
-////    archives javadocJar
-//    archives sourcesJar
-//}
+//生成javaDoc的jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
 
 // Bintray
 Properties properties = new Properties()
@@ -43,14 +51,18 @@ bintray {
 
     configurations = ['archives']
     pkg {
+        //这里的repo值必须要和你创建Maven仓库的时候的名字一样
         repo = bintrayRepo
+        //发布到JCenter上的项目名字
         name = bintrayName
+        //个人非组织填写bintray.user
         userOrg = properties.getProperty("bintray.user")
         desc = libraryDescription
         websiteUrl = siteUrl
         vcsUrl = gitUrl
 
         licenses = ['Apache-2.0']
+        //是否是公开项目
         publish = true
         publicDownloadNumbers = true
         version {

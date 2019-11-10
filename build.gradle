@@ -28,6 +28,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        //https://bintray.com/feijeff0486/maven/RxOkRetrofit
+        maven { url "https://dl.bintray.com/feijeff0486/RxOkRetrofitV15" }
+
     }
 }
 
